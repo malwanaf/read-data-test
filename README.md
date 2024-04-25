@@ -11,7 +11,9 @@ localhost:3000/testmongo
 
 
 Use mongoui to diplay the lightning strikes location on map.
+
 Use dataviewer to display the historical data of the lightning strikes.
+
 Use testmongo to check the mongoDB data
 
 
