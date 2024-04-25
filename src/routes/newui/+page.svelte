@@ -24,41 +24,41 @@
   const profileRadioValue = "benoit";
 
 //   get data
-import { onMount } from 'svelte';
-    import { onDestroy } from 'svelte';
-  
-    let eventData = [];
-    let eventSource;
-  
-    // Function to establish SSE connection
-    const establishSSEConnection = () => {
-      eventSource = new EventSource('http://localhost:3000/data-stream'); // URL of your SSE endpoint
-  
-      // Event listener for 'message' event
-      eventSource.addEventListener('message', event => {
-        const data = JSON.parse(event.data);
-        eventData = data; // Update component state with received data
-      });
-  
-      // Event listener for 'error' event
-      eventSource.addEventListener('error', () => {
-        console.error('SSE connection error');
-        eventSource.close();
-        // Attempt to reconnect after a delay
-        setTimeout(establishSSEConnection, 2000); // Adjust the delay as needed
-      });
-    };
-  
-    onMount(() => {
-      establishSSEConnection(); // Establish SSE connection on component mount
+  import { onMount } from 'svelte';
+  import { onDestroy } from 'svelte';
+
+  let eventData = [];
+  let eventSource;
+
+  // Function to establish SSE connection
+  const establishSSEConnection = () => {
+  eventSource = new EventSource('localhost:3000/items/stream'); // URL of your SSE endpoint
+
+  // Event listener for 'message' event
+  eventSource.addEventListener('message', event => {
+    const data = JSON.parse(event.data);
+    eventData = data; // Update component state with received data
+  });
+
+  // Event listener for 'error' event
+  eventSource.addEventListener('error', () => {
+    console.error('SSE connection error');
+    eventSource.close();
+    // Attempt to reconnect after a delay
+    setTimeout(establishSSEConnection, 2000); // Adjust the delay as needed
     });
-  
-    // Clean up SSE connection on component unmount
-    onDestroy(() => {
-      if (eventSource) {
-        eventSource.close();
-      }
-    });
+  };
+
+  onMount(() => {
+    establishSSEConnection(); // Establish SSE connection on component mount
+  });
+
+  // Clean up SSE connection on component unmount
+  onDestroy(() => {
+    if (eventSource) {
+      eventSource.close();
+    }
+  });
   </script>
  <div class="w-max m-2 z-20 absolute ">
     <Menubar.Root class="">
@@ -154,6 +154,26 @@ import { onMount } from 'svelte';
 </div>
 <div class="w-max m-2 z-30 absolute bottom-0 left-0">
   <div class="alert-area mb-2">
+    {#each eventData.slice().slice(-1) as product}
+    <Alert.Root class="m-2" >
+        <ExclamationTriangle class="h-4 w-4" />
+        <Alert.Title>New Strike Occurred</Alert.Title>
+        <Alert.Description>{product.strikeId} - {product.timestamp} - {product.distance} - {product.intensity}</Alert.Description>
+      </Alert.Root>
+    {/each}
+    {#each eventData as product}
+    <Alert.Root class="m-2" >
+        <ExclamationTriangle class="h-4 w-4" />
+        <Alert.Title>New Strike Occurred</Alert.Title>
+        <Alert.Description>{product.strikeId} - {product.timestamp} - {product.distance} - {product.intensity}</Alert.Description>
+      </Alert.Root>
+    {/each}
+  </div>
+</div>
+
+
+<!-- <div class="w-max m-2 z-30 absolute bottom-0 left-0">
+  <div class="alert-area mb-2">
     {#each eventData as product}
     <Alert.Root class="m-2" >
         <ExclamationTriangle class="h-4 w-4" />
@@ -168,7 +188,7 @@ import { onMount } from 'svelte';
   </div>
   
   <Switch id="airplane-mode" />
-</div>
+</div> -->
 
   <div class="w-full h-screen z-0">
 	<!-- Leaflet Map -->
