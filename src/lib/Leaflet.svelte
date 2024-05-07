@@ -30,9 +30,7 @@
 			});
 
 		// zoom control
-		L.control.zoom({
-		position: 'topright'
-		}).addTo(map);
+		// m ex
 
 		// scale control
 		// let scale = L.control.scale(); // Creating scale control
