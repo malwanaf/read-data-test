@@ -51,6 +51,7 @@
 		"d3": "^7.9.0",
 		"d3-scale-chromatic": "^3.1.0",
 		"events": "^3.3.0",
+		"firebase": "^10.11.1",
 		"leaflet": "^1.9.4",
 		"lucide-svelte": "^0.365.0",
 		"mode-watcher": "^0.3.0",
